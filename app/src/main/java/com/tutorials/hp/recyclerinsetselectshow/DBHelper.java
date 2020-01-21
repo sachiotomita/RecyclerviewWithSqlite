@@ -17,12 +17,10 @@ public class DBHelper extends SQLiteOpenHelper {
     //TABLE CREATION
     @Override
     public void onCreate(SQLiteDatabase db) {
-        try
-        {
+        try {
             db.execSQL(Constants.CREATE_TB);
 
-        }catch (Exception ex)
-        {
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
 
@@ -31,7 +29,7 @@ public class DBHelper extends SQLiteOpenHelper {
     //TABLE UPGRADE
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
-        db.execSQL("DROP TABLE IF EXISTS "+Constants.TB_NAME);
+        db.execSQL("DROP TABLE IF EXISTS " + Constants.TB_NAME);
         onCreate(db);
 
     }

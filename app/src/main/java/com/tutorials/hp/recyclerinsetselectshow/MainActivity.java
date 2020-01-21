@@ -22,10 +22,10 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
-    EditText nameTxt,posTxt;
+    EditText nameTxt, posTxt;
     RecyclerView rv;
     MyAdapter adapter;
-    ArrayList<Player> players=new ArrayList<>();
+    ArrayList<Player> players = new ArrayList<>();
 
 
     @Override
@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
         });
 
         //recycler
-       rv= (RecyclerView) findViewById(R.id.mRecycler);
+        rv = (RecyclerView) findViewById(R.id.mRecycler);
 
         //SET PROPS
         rv.setLayoutManager(new LinearLayoutManager(this));
@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
         rv.setItemAnimator(new DefaultItemAnimator());
 
         //ADAPTER
-        adapter=new MyAdapter(this,players);
+        adapter = new MyAdapter(this, players);
 
         //RETRIEVE
         retrieve();
@@ -62,24 +62,21 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //SHOW INSERT DIALOG
-    private void showDialog()
-    {
-        Dialog d=new Dialog(this);
-
+    private void showDialog() {
+        Dialog d = new Dialog(this);
         //NO TITLE
         d.requestWindowFeature(Window.FEATURE_NO_TITLE);
-
         d.setContentView(R.layout.custom_layout);
 
-        nameTxt= (EditText) d.findViewById(R.id.nameEditTxt);
-        posTxt= (EditText) d.findViewById(R.id.posEditTxt);
-        Button saveBtn= (Button) d.findViewById(R.id.saveBtn);
-        final Button retrievebtn= (Button) d.findViewById(R.id.retrieveBtn);
+        nameTxt = (EditText) d.findViewById(R.id.nameEditTxt);
+        posTxt = (EditText) d.findViewById(R.id.posEditTxt);
+        Button saveBtn = (Button) d.findViewById(R.id.saveBtn);
+        final Button retrievebtn = (Button) d.findViewById(R.id.retrieveBtn);
 
         saveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                save(nameTxt.getText().toString(),posTxt.getText().toString());
+                save(nameTxt.getText().toString(), posTxt.getText().toString());
             }
         });
 
@@ -87,7 +84,7 @@ public class MainActivity extends AppCompatActivity {
         retrievebtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                 retrieve();
+                retrieve();
             }
         });
 
@@ -95,23 +92,20 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    private void save(String name,String pos)
-    {
-        DBAdapter db=new DBAdapter(this);
+    private void save(String name, String pos) {
+        DBAdapter db = new DBAdapter(this);
 
         //OPEN DB
         db.openDB();
 
         //COMMIT
-        long result=db.add(name,pos);
+        long result = db.add(name, pos);
 
-        if(result>0)
-        {
+        if (result > 0) {
             nameTxt.setText("");
             posTxt.setText("");
-        }else
-        {
-            Snackbar.make(nameTxt,"Unable To Save",Snackbar.LENGTH_SHORT).show();
+        } else {
+            Snackbar.make(nameTxt, "Unable To Save", Snackbar.LENGTH_SHORT).show();
         }
 
         db.closeDB();
@@ -121,39 +115,45 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //RETREIEV
-    private void retrieve()
-    {
+    private void retrieve() {
         players.clear();
 
-        DBAdapter db=new DBAdapter(this);
+        DBAdapter db = new DBAdapter(this);
         db.openDB();
 
         //RETRIEVE
-        Cursor c=db.getAllPlayers();
+        Cursor c = db.getAllPlayers();
 
         //LOOP AND ADD TO ARRAYLIST
-        while (c.moveToNext())
-        {
-            int id=c.getInt(0);
-            String name=c.getString(1);
-            String pos=c.getString(2);
+        while (c.moveToNext()) {
+            int id = c.getInt(0);
+            String name = c.getString(1);
+            String pos = c.getString(2);
 
-            Player p=new Player(id,name,pos,R.id.playerImage);
+            Player p = new Player(id, name, pos, R.id.playerImage);
 
-            //ADD TO ARRAYLIS
+            //ADD TO ARRAYLI
             players.add(p);
         }
 
         //CHECK IF ARRAYLIST ISNT EMPTY
-        if(!(players.size()<1))
-        {
+        if (!(players.size() < 1)) {
             rv.setAdapter(adapter);
         }
 
-        db.closeDB();;
+        db.closeDB();
+        ;
 
     }
 
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.menu_main, menu);
+        return true;
+    }
 
 }
 

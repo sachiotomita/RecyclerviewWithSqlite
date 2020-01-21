@@ -17,17 +17,15 @@ public class DBAdapter {
 
     public DBAdapter(Context c) {
         this.c = c;
-        helper=new DBHelper(c);
+        helper = new DBHelper(c);
     }
 
     //OPEN DATABASE
-    public DBAdapter openDB()
-    {
+    public DBAdapter openDB() {
         try {
-            db=helper.getWritableDatabase();
+            db = helper.getWritableDatabase();
 
-        }catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -35,13 +33,11 @@ public class DBAdapter {
     }
 
     //CLOSE DATABASE
-    public void closeDB()
-    {
+    public void closeDB() {
         try {
-          helper.close();
+            helper.close();
 
-        }catch (SQLException e)
-        {
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -49,17 +45,14 @@ public class DBAdapter {
     }
 
     //INSERT
-    public long add(String name,String pos)
-    {
-        try
-        {
-            ContentValues cv=new ContentValues();
-            cv.put(Constants.NAME,name);
+    public long add(String name, String pos) {
+        try {
+            ContentValues cv = new ContentValues();
+            cv.put(Constants.NAME, name);
             cv.put(Constants.POSITION, pos);
 
-            return db.insert(Constants.TB_NAME,Constants.ROW_ID,cv);
-        }catch (SQLException e)
-        {
+            return db.insert(Constants.TB_NAME, Constants.ROW_ID, cv);
+        } catch (SQLException e) {
             e.printStackTrace();
         }
 
@@ -67,11 +60,10 @@ public class DBAdapter {
     }
 
     //RETRIEVE
-    public Cursor getAllPlayers()
-    {
-        String[] columns={Constants.ROW_ID,Constants.NAME,Constants.POSITION};
+    public Cursor getAllPlayers() {
+        String[] columns = {Constants.ROW_ID, Constants.NAME, Constants.POSITION};
 
-        return db.query(Constants.TB_NAME,columns,null,null,null,null,null);
+        return db.query(Constants.TB_NAME, columns, null, null, null, null, null);
 
     }
 }
